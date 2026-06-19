@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "forex-predict-mcp"
-version = "0.1.0"
+version = "0.1.1"
 description = "FastMCP server exposing XGBoost forex directional predictions as MCP tools"
 requires-python = ">=3.13"
 dependencies = [
