@@ -1,0 +1,55 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "forex-predict-mcp"
+version = "0.1.0"
+description = "FastMCP server exposing XGBoost forex directional predictions as MCP tools"
+requires-python = ">=3.13"
+dependencies = [
+    "fastmcp>=2.0",
+    "xgboost>=2.0",
+    "yfinance>=0.2",
+    "pandas>=2.0",
+    "numpy>=1.26",
+]
+
+[project.scripts]
+forex-predict-mcp = "forex_predict_mcp.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/forex_predict_mcp"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-mock>=3.14",
+    "ruff>=0.4",
+    "mypy>=1.10",
+    "pandas-stubs>=2.0",
+]
+
+[tool.taskipy.tasks]
+test  = { cmd = "uv run pytest", help = "Run unit tests" }
+lint  = { cmd = "uv run ruff check . && uv run mypy src", help = "Lint and type-check" }
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+src = ["src"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+
+[tool.mypy]
+strict = true
+python_version = "3.13"
+mypy_path = "src"
+
+[[tool.mypy.overrides]]
+module = ["yfinance", "sklearn.*", "xgboost.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
