@@ -70,11 +70,36 @@ Runs the baked-in XGBoost model against pre-computed features and returns a dire
 
 ## `.mcp.json` configuration
 
+Add the following entry to your `.mcp.json` (typically at the project root or `~/.claude/.mcp.json`):
+
 ```json
-"forex-predict-mcp": {
-  "type": "stdio",
-  "command": "docker",
-  "args": ["run", "--rm", "-i", "sleepingtalent/forex-predict-mcp:latest"]
+{
+  "mcpServers": {
+    "forex-predict-mcp": {
+      "type": "stdio",
+      "command": "docker",
+      "args": ["run", "--rm", "-i", "sleepingtalent/forex-predict-mcp:latest"]
+    }
+  }
+}
+```
+
+If you already have other servers (e.g. `oanda-mcp-server`), add `forex-predict-mcp` alongside them:
+
+```json
+{
+  "mcpServers": {
+    "oanda-mcp-server": {
+      "type": "stdio",
+      "command": "docker",
+      "args": ["run", "--rm", "-i", "-e", "OANDA_API_KEY", "-e", "OANDA_ACCOUNT_ID", "-e", "OANDA_ENVIRONMENT", "sleepingtalent/oanda-mcp-server:latest"]
+    },
+    "forex-predict-mcp": {
+      "type": "stdio",
+      "command": "docker",
+      "args": ["run", "--rm", "-i", "sleepingtalent/forex-predict-mcp:latest"]
+    }
+  }
 }
 ```
 
